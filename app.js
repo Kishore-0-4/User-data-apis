@@ -28,13 +28,13 @@ const initializeDBAndServer = async () => {
 initializeDBAndServer();
 
 const validatePassword = (password) => {
-  return password.length > 4;
+  return password.length > 5;
 };
 
 app.post("/register", async (request, response) => {
   const { username, name, password, gender, location } = request.body;
   const hashedPassword = await bcrypt.hash(password, 10);
-  const selectUserQuery = `SELECT * FROM user WHERE username = '${username};`;
+  const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
   const dbUser = await db.get(selectUserQuery);
 
   if (dbUser === undefined) {
@@ -65,7 +65,7 @@ app.post("/register", async (request, response) => {
 //Login API
 app.post("/login", async (request, response) => {
   const { username, password } = request.body;
-  const selectUserQuery = `SELECT * FROM user WHERE username = '${username};`;
+  const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
   const dbUser = await db.get(selectUserQuery);
 
   if (dbUser === undefined) {
@@ -74,7 +74,7 @@ app.post("/login", async (request, response) => {
   } else {
     const isPasswordMatched = await bcrypt.compare(password, dbUser.password);
     if (isPasswordMatched === true) {
-      response.send("Login Success");
+      response.send("Login success!");
     } else {
       response.status(400);
       response.send("Invalid password");
@@ -85,7 +85,7 @@ app.post("/login", async (request, response) => {
 //change password API
 app.put("/change-password", async (request, response) => {
   const { username, oldPassword, newPassword } = request.body;
-  const selectUserQuery = `SELECT * FROM user WHERE username = '${username};`;
+  const selectUserQuery = `SELECT * FROM user WHERE username = '${username}';`;
   const dbUser = await db.get(selectUserQuery);
 
   if (dbUser === undefined) {
